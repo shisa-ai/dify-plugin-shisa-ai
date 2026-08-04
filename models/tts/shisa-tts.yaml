@@ -4,6 +4,53 @@ label:
   ja_JP: Shisa音声合成
 model_type: tts
 model_properties:
+  default_voice: ce9c17ac-36f5-4503-8b6e-3b74f4d55e4d
+  voices:
+    - mode: ce9c17ac-36f5-4503-8b6e-3b74f4d55e4d
+      name: JP Male Technical Support
+      language: [ja-JP]
+    - mode: 23f41e86-c4a1-4cd9-a6fa-8a8a82905933
+      name: JA Male Professor
+      language: [ja-JP]
+    - mode: a41077da-d5cc-4b7e-b625-555f472906e2
+      name: JP Female Shopping Mall Sales
+      language: [ja-JP]
+    - mode: 027e9ae6-0deb-47ac-9e85-a11e9a5d0281
+      name: JA Male Weather Broadcast
+      language: [ja-JP]
+    - mode: 15354123-f0be-4795-8101-eab7b2843b4c
+      name: JA Male News Reporter
+      language: [ja-JP]
+    - mode: e460538b-b236-49bf-891b-6e652c8207fe
+      name: JA Female Announcements
+      language: [ja-JP]
+    - mode: 4144b313-756f-4a29-aab1-875167874321
+      name: JA Female Kids Show Host
+      language: [ja-JP]
+    - mode: 61ba1141-60aa-4bc3-a3b3-be1ec20700b3
+      name: JA Female Customer Service 1
+      language: [ja-JP]
+    - mode: ff5c959b-0c47-4dc9-b008-6237da78ecc1
+      name: JP Male College Student
+      language: [ja-JP]
+    - mode: 53bd4a86-10ae-480b-aa7b-92b5d47d4fec
+      name: JP Cartoon Character
+      language: [ja-JP]
+    - mode: c69db8e9-2b47-47b9-9d09-cb72692a45b5
+      name: JP Male Mid-age Narrator 2
+      language: [ja-JP]
+    - mode: 5c6ae40b-58fe-43f2-9f53-69752a79ebdd
+      name: JP Male Customer Service 2
+      language: [ja-JP]
+    - mode: b61bcc3d-ee57-4d35-9a78-fbe8baf95f90
+      name: JP Male Customer Service 3
+      language: [ja-JP]
+    - mode: eefa45c8-b389-4d21-a902-3a51dc99982c
+      name: JP Female Customer Service 2
+      language: [ja-JP]
+    - mode: efa6e9e9-016b-4489-97a1-9a52eaebf696
+      name: JP Female Customer Service 3
+      language: [ja-JP]
   audio_type: mp3
   word_limit: 5000
   max_workers: 1

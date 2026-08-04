@@ -28,7 +28,8 @@ class ShisaAIText2SpeechModel(TTSModel):
         result = []
         for item in voices:
             voice_id = item.get("id")
-            if not voice_id:
+            formats = {str(value).lower() for value in item.get("formats", [])}
+            if not voice_id or "mp3" not in formats or item.get("streaming") is not True:
                 continue
             voice_language = str(item.get("language", ""))
             if language and language.split("-")[0].lower() not in voice_language.lower():
