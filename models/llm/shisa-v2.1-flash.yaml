@@ -1,0 +1,23 @@
+model: shisa-ai/shisa-v2.1-unphi4-14b
+label:
+  en_US: Shisa V2.1 Flash
+  ja_JP: Shisa V2.1 Flash
+model_type: llm
+model_properties:
+  mode: chat
+  context_size: 16384
+parameter_rules:
+  - name: temperature
+    use_template: temperature
+  - name: top_p
+    use_template: top_p
+  - name: max_tokens
+    use_template: max_tokens
+    default: 1024
+    min: 1
+    max: 8192
+pricing:
+  input: "0.20"
+  output: "0.40"
+  unit: "0.000001"
+  currency: USD

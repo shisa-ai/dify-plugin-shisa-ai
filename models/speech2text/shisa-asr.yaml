@@ -1,0 +1,8 @@
+model: shisa-asr
+label:
+  en_US: Shisa ASR
+  ja_JP: Shisa音声認識
+model_type: speech2text
+model_properties:
+  file_upload_limit: 25
+  supported_file_extensions: flac,mp3,ogg,wav

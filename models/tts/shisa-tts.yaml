@@ -1,0 +1,14 @@
+model: shisa-tts
+label:
+  en_US: Shisa TTS
+  ja_JP: Shisa音声合成
+model_type: tts
+model_properties:
+  audio_type: mp3
+  word_limit: 5000
+  max_workers: 1
+pricing:
+  input: "0.00008"
+  output: "0"
+  unit: "1"
+  currency: USD
