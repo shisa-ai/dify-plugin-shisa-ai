@@ -11,7 +11,7 @@ icon_small:
 icon_large:
   en_US: shisa-logo.png
   ja_JP: shisa-logo.png
-background: '#FFFFFF'
+background: "#FFFFFF"
 help:
   title:
     en_US: Get your Shisa AI API key
@@ -20,140 +20,111 @@ help:
     en_US: https://platform.shisa.ai/dashboard
     ja_JP: https://platform.shisa.ai/ja/dashboard
 supported_model_types:
-- llm
-- speech2text
-- tts
+  - llm
+  - speech2text
+  - tts
 configurate_methods:
-- predefined-model
-- customizable-model
+  - predefined-model
 provider_credential_schema:
   credential_form_schemas:
-  - variable: api_key
-    label:
-      en_US: API Key
-      ja_JP: APIキー
-    type: secret-input
-    required: true
-    placeholder:
-      en_US: Enter your Shisa AI API key
-      ja_JP: Shisa AI APIキーを入力してください
-  - variable: api_base
-    label:
-      en_US: API Base URL
-      ja_JP: APIベースURL
-    type: text-input
-    required: false
-    default: https://api.shisa.ai
-    placeholder:
-      en_US: https://api.shisa.ai
-      ja_JP: https://api.shisa.ai
-model_credential_schema:
-  model:
-    label:
-      en_US: Shisa model name
-      ja_JP: Shisaモデル名
-    placeholder:
-      en_US: For Speech-to-Text, use shisa-asr
-      ja_JP: 音声認識では shisa-asr を使用
-  credential_form_schemas:
-  - variable: api_key
-    label:
-      en_US: Shisa ASR model credential API key
-      ja_JP: Shisa ASRモデル認証APIキー
-    type: secret-input
-    required: true
-    placeholder:
-      en_US: Enter your Shisa AI API key
-      ja_JP: Shisa AI APIキーを入力してください
-  - variable: api_base
-    label:
-      en_US: Shisa ASR model credential API base URL
-      ja_JP: Shisa ASRモデル認証APIベースURL
-    type: text-input
-    required: false
-    default: https://api.shisa.ai
-    placeholder:
-      en_US: https://api.shisa.ai
-      ja_JP: https://api.shisa.ai
-  - variable: asr_language
-    label:
-      en_US: ASR language — MODEL CREDENTIAL
-      ja_JP: ASR言語 — モデル認証
-    type: text-input
-    required: false
-    placeholder:
-      en_US: Optional, for example ja or en. Blank enables automatic detection.
-      ja_JP: '任意（例: ja、en）。空欄では自動検出。'
-  - variable: asr_hotwords
-    label:
-      en_US: ASR hotwords — MODEL CREDENTIAL
-      ja_JP: ASRホットワード — モデル認証
-    type: text-input
-    required: false
-    max_length: 10000
-    placeholder:
-      en_US: Optional JSON array or comma-separated list for this ASR model credential.
-      ja_JP: このASRモデル認証で使う任意のJSON配列またはカンマ区切り。
-  - variable: asr_temperature
-    label:
-      en_US: ASR temperature — MODEL CREDENTIAL
-      ja_JP: ASR temperature — モデル認証
-    type: text-input
-    required: false
-    placeholder:
-      en_US: Optional number; blank uses the Shisa API default (0.0).
-      ja_JP: 任意の数値。空欄ではShisa APIデフォルト（0.0）を使用。
-  - variable: asr_top_p
-    label:
-      en_US: ASR top_p — MODEL CREDENTIAL
-      ja_JP: ASR top_p — モデル認証
-    type: text-input
-    required: false
-    placeholder:
-      en_US: Optional number; blank uses the Shisa API default (0.85).
-      ja_JP: 任意の数値。空欄ではShisa APIデフォルト（0.85）を使用。
-  - variable: asr_frequency_penalty
-    label:
-      en_US: ASR frequency penalty — MODEL CREDENTIAL
-      ja_JP: ASR frequency penalty — モデル認証
-    type: text-input
-    required: false
-    placeholder:
-      en_US: Optional number; blank uses the Shisa API default (0.5).
-      ja_JP: 任意の数値。空欄ではShisa APIデフォルト（0.5）を使用。
-  - variable: asr_repetition_penalty
-    label:
-      en_US: ASR repetition penalty — MODEL CREDENTIAL
-      ja_JP: ASR repetition penalty — モデル認証
-    type: text-input
-    required: false
-    placeholder:
-      en_US: Optional number; blank uses the Shisa API default (1.05).
-      ja_JP: 任意の数値。空欄ではShisa APIデフォルト（1.05）を使用。
-  - variable: asr_vad
-    label:
-      en_US: ASR VAD — MODEL CREDENTIAL
-      ja_JP: ASR VAD — モデル認証
-    type: text-input
-    required: false
-    placeholder:
-      en_US: Optional integer; blank uses the Shisa API default (1).
-      ja_JP: 任意の整数。空欄ではShisa APIデフォルト（1）を使用。
+    - variable: api_key
+      label:
+        en_US: API Key
+        ja_JP: APIキー
+      type: secret-input
+      required: true
+      placeholder:
+        en_US: Enter your Shisa AI API key
+        ja_JP: Shisa AI APIキーを入力してください
+    - variable: api_base
+      label:
+        en_US: API Base URL
+        ja_JP: APIベースURL
+      type: text-input
+      required: false
+      default: https://api.shisa.ai
+      placeholder:
+        en_US: https://api.shisa.ai
+        ja_JP: https://api.shisa.ai
+    - variable: asr_language
+      label:
+        en_US: "ASR language default — WORKSPACE-WIDE"
+        ja_JP: "ASR言語デフォルト — ワークスペース全体"
+      type: text-input
+      required: false
+      placeholder:
+        en_US: "Optional; for example ja or en. Affects every app using workspace ASR."
+        ja_JP: "任意（例: ja、en）。ワークスペースASRを使う全アプリに適用。"
+    - variable: asr_hotwords
+      label:
+        en_US: "ASR hotwords — WORKSPACE-WIDE"
+        ja_JP: "ASRホットワード — ワークスペース全体"
+      type: text-input
+      required: false
+      max_length: 10000
+      placeholder:
+        en_US: "Optional JSON array or comma-separated list. Affects EVERY app using workspace ASR."
+        ja_JP: "任意のJSON配列またはカンマ区切り。ASRを使う全アプリに適用。"
+    - variable: asr_temperature
+      label:
+        en_US: "ASR temperature default — WORKSPACE-WIDE"
+        ja_JP: "ASR temperatureデフォルト — ワークスペース全体"
+      type: text-input
+      required: false
+      placeholder:
+        en_US: "Optional number; blank uses the Shisa API default (0.0)."
+        ja_JP: "任意の数値。空欄ではShisa APIデフォルト（0.0）を使用。"
+    - variable: asr_top_p
+      label:
+        en_US: "ASR top_p default — WORKSPACE-WIDE"
+        ja_JP: "ASR top_pデフォルト — ワークスペース全体"
+      type: text-input
+      required: false
+      placeholder:
+        en_US: "Optional number; blank uses the Shisa API default (0.85)."
+        ja_JP: "任意の数値。空欄ではShisa APIデフォルト（0.85）を使用。"
+    - variable: asr_frequency_penalty
+      label:
+        en_US: "ASR frequency penalty — WORKSPACE-WIDE"
+        ja_JP: "ASR frequency penalty — ワークスペース全体"
+      type: text-input
+      required: false
+      placeholder:
+        en_US: "Optional number; blank uses the Shisa API default (0.5)."
+        ja_JP: "任意の数値。空欄ではShisa APIデフォルト（0.5）を使用。"
+    - variable: asr_repetition_penalty
+      label:
+        en_US: "ASR repetition penalty — WORKSPACE-WIDE"
+        ja_JP: "ASR repetition penalty — ワークスペース全体"
+      type: text-input
+      required: false
+      placeholder:
+        en_US: "Optional number; blank uses the Shisa API default (1.05)."
+        ja_JP: "任意の数値。空欄ではShisa APIデフォルト（1.05）を使用。"
+    - variable: asr_vad
+      label:
+        en_US: "ASR VAD default — WORKSPACE-WIDE"
+        ja_JP: "ASR VADデフォルト — ワークスペース全体"
+      type: text-input
+      required: false
+      placeholder:
+        en_US: "Optional integer; blank uses the Shisa API default (1)."
+        ja_JP: "任意の整数。空欄ではShisa APIデフォルト（1）を使用。"
 models:
   llm:
     predefined:
-    - models/llm/*.yaml
+      - models/llm/*.yaml
     position: models/llm/_position.yaml
   speech2text:
     predefined:
-    - models/speech2text/*.yaml
+      - models/speech2text/*.yaml
   tts:
     predefined:
-    - models/tts/*.yaml
+      - models/tts/*.yaml
 extra:
   python:
     provider_source: provider/shisa_ai.py
     model_sources:
-    - models/llm/llm.py
-    - models/speech2text/speech2text.py
-    - models/tts/tts.py
+      - models/llm/llm.py
+      - models/speech2text/speech2text.py
+      - models/tts/tts.py
