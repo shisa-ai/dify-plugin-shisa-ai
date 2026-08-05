@@ -10,6 +10,10 @@ __pycache__/
 .github/
 artifacts/
 tests/
+docs/
+scripts/
+dist/
+uv.lock
 CONTRIBUTING.md
 CHANGELOG.md
 SECURITY.md

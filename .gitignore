@@ -9,3 +9,4 @@ __pycache__/
 *.difypkg
 .DS_Store
 artifacts/
+dist/
