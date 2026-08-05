@@ -1,6 +1,6 @@
 [project]
 name = "dify-shisa-ai"
-version = "0.0.6"
+version = "1.0.0"
 description = "Shisa AI model provider plugin for Dify"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -11,5 +11,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pip-audit==2.10.1",
     "pyyaml==6.0.3",
 ]
