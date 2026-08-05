@@ -47,8 +47,8 @@ For native audio formats and dynamic voice tooling, use the separate [Shisa AI T
 cp .env.example .env
 python3.12 -m venv .venv
 . .venv/bin/activate
-pip install -r requirements.txt
-python -m main
+uv sync --frozen --no-install-project
+uv run --frozen python main.py
 ```
 
 On Windows PowerShell:
@@ -57,8 +57,8 @@ On Windows PowerShell:
 Copy-Item .env.example .env
 py -3.12 -m venv .venv
 .venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-python main.py
+uv sync --frozen --no-install-project
+uv run --frozen python main.py
 ```
 
 Use the debug host and temporary key shown in the Dify plugin-debug dialog. Never publish `.env`, `.dev.vars`, application tokens, or remote-debug keys.

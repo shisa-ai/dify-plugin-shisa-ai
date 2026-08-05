@@ -2,6 +2,12 @@
 
 All notable user-visible changes are documented here.
 
+## [Unreleased]
+
+### Security
+
+- Adopt the Shisa AI supply-chain baseline with uv locking, a seven-day resolution cutoff, fully pinned hashed requirements, immutable GitHub Action SHAs, dependency review, workflow policy validation, a repository audit, and deterministic CycloneDX SBOM generation.
+
 ## [0.0.6] - 2026-08-05
 
 ### Changed
