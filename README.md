@@ -3,7 +3,7 @@
 A Dify model-provider plugin for Shisa AI's Japanese and English services:
 
 - Shisa V2.1 Flash and Pro LLMs
-- Shisa ASR speech recognition
+- Shisa ASR speech recognition (the exact no-speech marker `[Music]` is returned to Dify as an empty transcript)
 - Shisa TTS speech synthesis with dynamically discovered voices
 
 ## API key

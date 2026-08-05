@@ -37,7 +37,15 @@ class ShisaAISpeech2TextModel(Speech2TextModel):
             text = result["text"]
         except (ValueError, KeyError, TypeError) as error:
             raise InvokeBadRequestError("Shisa ASR returned an invalid response") from error
-        return str(text)
+        return self._normalize_transcript(str(text))
+
+    @staticmethod
+    def _normalize_transcript(text: str) -> str:
+        """Do not insert Shisa's exact no-speech music marker into user input."""
+        transcript = text.strip()
+        if transcript.casefold() == "[music]":
+            return ""
+        return transcript
 
     def validate_credentials(self, model: str, credentials: dict) -> None:
         # Provider-level validation uses GET /tts/voices and does not consume ASR credits.
