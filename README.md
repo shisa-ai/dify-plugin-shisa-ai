@@ -24,11 +24,13 @@ Current prices, quotas, model availability, and account-specific rates can chang
 
 ## Installation
 
-1. Download `shisa-ai-1.0.0.difypkg` from the [v1.0.0 GitHub Release](https://github.com/shisa-ai/dify-plugin-shisa-ai/releases/tag/v1.0.0).
-2. Optionally verify it against the release `SHA256SUMS` file and provenance attestation.
+1. Download `shisa-ai-1.0.1.difypkg` from the [v1.0.0 GitHub Release](https://github.com/shisa-ai/dify-plugin-shisa-ai/releases/tag/v1.0.1).
+2. Optionally verify its GitHub-provided SHA-256 digest and provenance attestation.
 3. In Dify, open **Plugins**, choose installation from a local package, and upload the file.
 4. Open the Shisa AI model-provider settings and enter your Shisa AI API key.
 5. Select the required Shisa LLM, ASR, or TTS model in your Dify application.
+
+Only the `.difypkg` file is installable in Dify. GitHub’s automatically generated **Source code (zip)** and **Source code (tar.gz)** archives are not plugin packages.
 
 Do not commit API keys or Dify remote-debug credentials.
 
@@ -72,7 +74,7 @@ With the Dify plugin CLI installed:
 dify plugin package .
 ```
 
-Protected `v*` tags invoke `.github/workflows/release.yml`. CI builds and validates the `.difypkg`, generates an SBOM and checksums, attests provenance, and publishes the files to the matching GitHub Release. Generated release files are intentionally excluded from Git.
+Protected `v*` tags invoke `.github/workflows/release.yml`. CI builds and validates the `.difypkg`, embeds a runtime SBOM, attests provenance, and publishes only the installable package to the matching GitHub Release. Generated release files are intentionally excluded from Git.
 
 ## Service endpoints
 
