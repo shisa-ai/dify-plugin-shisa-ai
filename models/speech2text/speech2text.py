@@ -32,7 +32,7 @@ class ShisaAISpeech2TextModel(Speech2TextModel):
         payload: dict[str, Any] = {
             "audio": base64.b64encode(audio).decode("ascii")
         }
-        payload.update(self._workspace_asr_defaults(credentials))
+        payload.update(self._model_asr_defaults(credentials))
         response = self._request(credentials, payload)
         try:
             result = response.json()
@@ -42,8 +42,8 @@ class ShisaAISpeech2TextModel(Speech2TextModel):
         return self._normalize_transcript(str(text))
 
     @classmethod
-    def _workspace_asr_defaults(cls, credentials: dict) -> dict[str, Any]:
-        """Parse explicitly configured workspace-wide ASR request defaults."""
+    def _model_asr_defaults(cls, credentials: dict) -> dict[str, Any]:
+        """Parse explicitly configured Shisa ASR model-credential defaults."""
         defaults: dict[str, Any] = {}
 
         language = str(credentials.get("asr_language") or "").strip()
@@ -67,7 +67,7 @@ class ShisaAISpeech2TextModel(Speech2TextModel):
                     defaults[api_name] = float(raw_value)
                 except ValueError as error:
                     raise InvokeBadRequestError(
-                        f"Workspace-wide {credential_name} must be a number"
+                        f"Model credential {credential_name} must be a number"
                     ) from error
 
         raw_vad = str(credentials.get("asr_vad") or "").strip()
@@ -76,7 +76,7 @@ class ShisaAISpeech2TextModel(Speech2TextModel):
                 defaults["vad"] = int(raw_vad)
             except ValueError as error:
                 raise InvokeBadRequestError(
-                    "Workspace-wide asr_vad must be an integer"
+                    "Model credential asr_vad must be an integer"
                 ) from error
 
         return defaults
@@ -89,13 +89,13 @@ class ShisaAISpeech2TextModel(Speech2TextModel):
                 parsed = json.loads(value)
             except json.JSONDecodeError as error:
                 raise InvokeBadRequestError(
-                    "Workspace-wide ASR hotwords must be valid JSON or a newline/comma-separated list"
+                    "ASR model-credential hotwords must be valid JSON or a newline/comma-separated list"
                 ) from error
             if not isinstance(parsed, list) or not all(
                 isinstance(item, str) for item in parsed
             ):
                 raise InvokeBadRequestError(
-                    "Workspace-wide ASR hotwords JSON must be an array of strings"
+                    "ASR model-credential hotwords JSON must be an array of strings"
                 )
             hotwords = [item.strip() for item in parsed if item.strip()]
         else:
@@ -107,7 +107,7 @@ class ShisaAISpeech2TextModel(Speech2TextModel):
             ]
         if not hotwords:
             raise InvokeBadRequestError(
-                "Workspace-wide ASR hotwords must contain at least one word or phrase"
+                "ASR model-credential hotwords must contain at least one word or phrase"
             )
         return hotwords
 
@@ -123,6 +123,10 @@ class ShisaAISpeech2TextModel(Speech2TextModel):
         # Provider-level validation uses GET /tts/voices and does not consume ASR credits.
         if not credentials.get("api_key"):
             raise CredentialsValidateFailedError("API key is required")
+        try:
+            self._model_asr_defaults(credentials)
+        except InvokeBadRequestError as error:
+            raise CredentialsValidateFailedError(str(error)) from error
 
     @staticmethod
     def _request(credentials: dict, payload: dict) -> httpx.Response:

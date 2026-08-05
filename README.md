@@ -9,7 +9,7 @@ A Dify model-provider plugin for connecting Dify applications directly to Shisa 
 | Dify interface | Shisa service | Notes |
 | --- | --- | --- |
 | LLM | Shisa V2.1 Flash and Pro | OpenAI-compatible chat completions |
-| Speech-to-Text | Shisa ASR | Supports optional workspace-wide ASR defaults; exact no-speech marker `[Music]` is normalized to an empty transcript |
+| Speech-to-Text | Shisa ASR | Supports optional model-credential ASR defaults; exact no-speech marker `[Music]` is normalized to an empty transcript |
 | Text-to-Speech | Shisa TTS | Standard Dify integration outputs MP3 and discovers voices dynamically where Dify supports it |
 
 Translation is exposed separately through [Shisa AI Tools for Dify](https://github.com/shisa-ai/dify-plugin-shisa-ai-tools), because Dify does not provide a standard Translation model-provider interface.
@@ -44,11 +44,11 @@ Do not commit API keys or Dify remote-debug credentials.
 
 For native audio formats and dynamic voice tooling, use the separate [Shisa AI Tools plugin](https://github.com/shisa-ai/dify-plugin-shisa-ai-tools).
 
-## Workspace-wide ASR defaults
+## Shisa ASR model configuration
 
-The provider settings expose the documented optional Shisa ASR parameters: language, hotwords, temperature, `top_p`, frequency penalty, repetition penalty, and VAD. Dify does not pass these values to the standard Speech-to-Text interface per request. Instead, the plugin reads explicitly configured values from the provider credentials and adds them to each ASR request.
+Dify's **Config model** screen can use a dedicated Shisa ASR model credential containing the API key, API base URL, language, hotwords, temperature, `top_p`, frequency penalty, repetition penalty, and VAD. Dify does not pass these values to the standard Speech-to-Text interface per request. Instead, the plugin reads explicitly configured values from the selected model credential and adds them to each ASR request.
 
-> **Scope warning:** these settings are workspace-wide provider defaults. They affect every Dify application in the workspace that uses this Shisa ASR provider. They are not scoped to one Chatflow. Leave a field blank to omit it and use the Shisa API default.
+> **Scope warning:** this is model-level configuration, not a Chatflow parameter. Dify's standard microphone uses the workspace default Speech-to-Text model, so every app using that selected Shisa ASR model credential receives the same values. Leave a field blank to omit it and use the Shisa API default.
 
 Hotwords accept either a JSON string array:
 

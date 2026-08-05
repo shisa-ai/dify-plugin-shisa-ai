@@ -10,7 +10,7 @@ All notable user-visible changes are documented here.
 
 ### Changed
 
-- Label every ASR default prominently as workspace-wide because it affects all applications using the workspace Shisa ASR provider.
+- Expose ASR defaults through Dify's Shisa ASR model-credential configuration instead of the global provider credential form; every application using the selected default ASR model credential still receives the same settings.
 - Omit blank ASR settings so the documented Shisa API defaults remain authoritative.
 
 ## [1.0.1] - 2026-08-05

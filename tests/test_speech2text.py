@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 
 import yaml
 
-from dify_plugin.errors.model import InvokeBadRequestError
+from dify_plugin.errors.model import CredentialsValidateFailedError, InvokeBadRequestError
 
 from models.speech2text.speech2text import ShisaAISpeech2TextModel
 
@@ -20,10 +20,10 @@ class TranscriptNormalizationTests(unittest.TestCase):
         self.assertEqual(ShisaAISpeech2TextModel._normalize_transcript("[Music] hello"), "[Music] hello")
 
 
-class WorkspaceASRDefaultsTests(unittest.TestCase):
+class ModelCredentialASRDefaultsTests(unittest.TestCase):
     def test_blank_defaults_are_not_sent(self):
         self.assertEqual(
-            ShisaAISpeech2TextModel._workspace_asr_defaults(
+            ShisaAISpeech2TextModel._model_asr_defaults(
                 {
                     "asr_language": " ",
                     "asr_hotwords": "",
@@ -35,7 +35,7 @@ class WorkspaceASRDefaultsTests(unittest.TestCase):
 
     def test_all_documented_defaults_are_parsed(self):
         self.assertEqual(
-            ShisaAISpeech2TextModel._workspace_asr_defaults(
+            ShisaAISpeech2TextModel._model_asr_defaults(
                 {
                     "asr_language": "ja",
                     "asr_hotwords": '["Shisa AI", "Shisa V2.1"]',
@@ -65,23 +65,35 @@ class WorkspaceASRDefaultsTests(unittest.TestCase):
 
     def test_invalid_values_fail_before_api_request(self):
         with self.assertRaises(InvokeBadRequestError):
-            ShisaAISpeech2TextModel._workspace_asr_defaults(
+            ShisaAISpeech2TextModel._model_asr_defaults(
                 {"asr_temperature": "not-a-number"}
             )
         with self.assertRaises(InvokeBadRequestError):
             ShisaAISpeech2TextModel._parse_hotwords('["valid", 2]')
 
-    def test_provider_labels_warn_that_asr_defaults_are_workspace_wide(self):
+    def test_asr_defaults_are_in_model_credential_schema_only(self):
         provider = yaml.safe_load(Path("provider/shisa_ai.yaml").read_text(encoding="utf-8"))
-        forms = provider["provider_credential_schema"]["credential_form_schemas"]
-        asr_forms = [form for form in forms if form["variable"].startswith("asr_")]
+        provider_forms = provider["provider_credential_schema"]["credential_form_schemas"]
+        self.assertFalse(
+            any(form["variable"].startswith("asr_") for form in provider_forms)
+        )
+        self.assertIn("customizable-model", provider["configurate_methods"])
+        model_forms = provider["model_credential_schema"]["credential_form_schemas"]
+        asr_forms = [form for form in model_forms if form["variable"].startswith("asr_")]
         self.assertEqual(len(asr_forms), 7)
         for form in asr_forms:
             self.assertFalse(form["required"])
-            self.assertIn("WORKSPACE-WIDE", form["label"]["en_US"])
-            self.assertIn("ワークスペース全体", form["label"]["ja_JP"])
+            self.assertIn("MODEL CREDENTIAL", form["label"]["en_US"])
+            self.assertIn("モデル認証", form["label"]["ja_JP"])
 
-    def test_invoke_merges_workspace_defaults_into_request(self):
+    def test_model_credential_validation_rejects_invalid_defaults(self):
+        model_instance = object.__new__(ShisaAISpeech2TextModel)
+        with self.assertRaises(CredentialsValidateFailedError):
+            model_instance.validate_credentials(
+                "shisa-asr", {"api_key": "test", "asr_vad": "not-an-integer"}
+            )
+
+    def test_invoke_merges_model_credential_defaults_into_request(self):
         response = Mock()
         response.json.return_value = {"text": "Shisa AI"}
         credentials = {
