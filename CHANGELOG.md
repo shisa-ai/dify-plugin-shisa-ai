@@ -2,7 +2,15 @@
 
 All notable user-visible changes are documented here.
 
-## [Unreleased]
+## [1.0.0] - 2026-08-05
+
+### Added
+
+- Add tag-only CI packaging, package-content validation, CycloneDX release SBOMs, SHA-256 checksums, and GitHub artifact provenance attestations.
+
+### Changed
+
+- Promote the model-provider plugin package version to `1.0.0`.
 
 ### Security
 
