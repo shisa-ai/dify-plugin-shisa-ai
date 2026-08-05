@@ -57,8 +57,9 @@ The transitive dependency inventory, versions, artifact URLs, and hashes are rec
 ## Exceptions and open remediation
 
 1. The repository currently has one maintainer. The `release` environment therefore cannot require independent approval; protected tags, exact tag/version validation, main-ancestry validation, immutable pins, CI checks, checksums, and attestations are the compensating controls. Single-maintainer administrative bypasses must be recorded on the relevant PR or release.
-2. Routine Dependabot PRs require the configured seven-day cooldown and human review; security updates may bypass cooldown under the documented exception process.
-3. Release packages must be installed and exercised in a non-production Dify workspace before production rollout.
+2. `pip-audit` has a development-only transitive dependency, `boolean-py`, whose OpenSSF Scorecard is currently 2.8. It is accepted because vulnerability scanning is required; the dependency is version-locked, hash-verified, age-gated, excluded from runtime requirements and the release SBOM, and does not execute in the installed plugin.
+3. Routine Dependabot PRs require the configured seven-day cooldown and human review; security updates may bypass cooldown under the documented exception process.
+4. Release packages must be installed and exercised in a non-production Dify workspace before production rollout.
 
 ## Verification commands
 
