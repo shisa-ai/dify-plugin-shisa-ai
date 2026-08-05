@@ -1,7 +1,18 @@
 # Dify build artifacts and local development files
 .env
-.venv
-__pycache__
-.git
-.github
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+.venv/
+__pycache__/
+.git/
+.github/
+artifacts/
+tests/
+CONTRIBUTING.md
+CHANGELOG.md
+SECURITY.md
+.gitattributes
+*.py[cod]
 *.difypkg
