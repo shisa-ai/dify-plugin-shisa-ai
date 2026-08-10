@@ -24,7 +24,7 @@ Current prices, quotas, model availability, and account-specific rates can chang
 
 ## Installation
 
-1. Download `shisa-ai-1.0.1.difypkg` from the [v1.0.1 GitHub Release](https://github.com/shisa-ai/dify-plugin-shisa-ai/releases/tag/v1.0.1).
+1. Download `shisa-ai-1.0.2.difypkg` from the [v1.0.2 GitHub Release](https://github.com/shisa-ai/dify-plugin-shisa-ai/releases/tag/v1.0.2).
 2. Optionally verify its GitHub-provided SHA-256 digest and provenance attestation.
 3. In Dify, open **Plugins**, choose installation from a local package, and upload the file.
 4. Open the Shisa AI model-provider settings and enter your Shisa AI API key.
