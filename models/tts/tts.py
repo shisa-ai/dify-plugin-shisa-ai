@@ -119,8 +119,8 @@ class ShisaAIText2SpeechModel(TTSModel):
     def _get_voice_catalog(
         self, credentials: dict, validation: bool = False
     ) -> list[dict[str, Any]]:
-        api_key = credentials.get("api_key")
-        if not api_key:
+        key = credentials.get("api_key")
+        if not key:
             if validation:
                 raise CredentialsValidateFailedError("API key is required")
             raise InvokeAuthorizationError("API key is required")

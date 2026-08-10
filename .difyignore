@@ -20,3 +20,6 @@ SECURITY.md
 .gitattributes
 *.py[cod]
 *.difypkg
+.gitignore
+SBOM.cdx.json
+pyproject.toml
