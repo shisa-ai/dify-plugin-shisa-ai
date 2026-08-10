@@ -16,6 +16,6 @@ Data is transmitted only to perform the operation the user requested. API creden
 
 ## Where it goes
 
-Data is sent to the Shisa AI API. Processing by Shisa AI is governed by the [Shisa AI privacy policy](https://platform.shisa.ai/terms/privacy) and [terms](https://platform.shisa.ai/terms/conditions).
+Data is sent to the Shisa AI API. Processing by Shisa AI is governed by the [Shisa AI privacy policy](https://platform.shisa.ai/en/terms/privacy) and [terms](https://platform.shisa.ai/en/terms/conditions).
 
-The plugin itself does not store, log, or share this content with any party other than Shisa AI.
+The plugin itself does not store, log, or share this content with any party other than Shisa AI. For paid API access, Shisa processes user content solely to deliver the requested service and does not use it to train models without explicit written permission; see the Shisa AI privacy policy for details.
