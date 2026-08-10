@@ -9,7 +9,7 @@ A Dify model-provider plugin for connecting Dify applications directly to Shisa 
 | Dify interface | Shisa service | Notes |
 | --- | --- | --- |
 | LLM | Shisa V2.1 Flash and Pro | OpenAI-compatible chat completions |
-| Speech-to-Text | Shisa ASR | Exact no-speech marker `[Music]` is normalized to an empty transcript |
+| Speech-to-Text | Shisa ASR | Supports optional workspace-wide ASR defaults; exact no-speech marker `[Music]` is normalized to an empty transcript |
 | Text-to-Speech | Shisa TTS | Standard Dify integration outputs MP3 and discovers voices dynamically where Dify supports it |
 
 Translation is exposed separately through [Shisa AI Tools for Dify](https://github.com/shisa-ai/dify-plugin-shisa-ai-tools), because Dify does not provide a standard Translation model-provider interface.
@@ -24,7 +24,7 @@ Current prices, quotas, model availability, and account-specific rates can chang
 
 ## Installation
 
-1. Download `shisa-ai-1.0.1.difypkg` from the [v1.0.0 GitHub Release](https://github.com/shisa-ai/dify-plugin-shisa-ai/releases/tag/v1.0.1).
+1. Download `shisa-ai-1.0.2.difypkg` from the [v1.0.2 GitHub Release](https://github.com/shisa-ai/dify-plugin-shisa-ai/releases/tag/v1.0.2).
 2. Optionally verify its GitHub-provided SHA-256 digest and provenance attestation.
 3. In Dify, open **Plugins**, choose installation from a local package, and upload the file.
 4. Open the Shisa AI model-provider settings and enter your Shisa AI API key.
@@ -43,6 +43,20 @@ Do not commit API keys or Dify remote-debug credentials.
 - Silent or wrong-microphone input may be returned by the ASR service as the exact marker `[Music]`; this plugin converts only that exact case-insensitive marker to an empty transcript.
 
 For native audio formats and dynamic voice tooling, use the separate [Shisa AI Tools plugin](https://github.com/shisa-ai/dify-plugin-shisa-ai-tools).
+
+## Workspace-wide ASR defaults
+
+The provider settings expose the documented optional Shisa ASR parameters: language, hotwords, temperature, `top_p`, frequency penalty, repetition penalty, and VAD. Dify does not pass these values to the standard Speech-to-Text interface per request. Instead, the plugin reads explicitly configured values from the provider credentials and adds them to each ASR request.
+
+> **Scope warning:** these settings are workspace-wide provider defaults. They affect every Dify application in the workspace that uses this Shisa ASR provider. They are not scoped to one Chatflow. Leave a field blank to omit it and use the Shisa API default.
+
+Hotwords accept either a JSON string array:
+
+```json
+["Shisa AI", "Shisa V2.1", "Dify"]
+```
+
+or a comma-separated list. For per-node settings, use **Transcribe Audio** in the separate [Shisa AI Tools plugin](https://github.com/shisa-ai/dify-plugin-shisa-ai-tools).
 
 ## Development
 

@@ -46,6 +46,70 @@ provider_credential_schema:
       placeholder:
         en_US: https://api.shisa.ai
         ja_JP: https://api.shisa.ai
+    - variable: asr_language
+      label:
+        en_US: "ASR language default — WORKSPACE-WIDE"
+        ja_JP: "ASR言語デフォルト — ワークスペース全体"
+      type: text-input
+      required: false
+      placeholder:
+        en_US: "Optional; for example ja or en. Affects every app using workspace ASR."
+        ja_JP: "任意（例: ja、en）。ワークスペースASRを使う全アプリに適用。"
+    - variable: asr_hotwords
+      label:
+        en_US: "ASR hotwords — WORKSPACE-WIDE"
+        ja_JP: "ASRホットワード — ワークスペース全体"
+      type: text-input
+      required: false
+      max_length: 10000
+      placeholder:
+        en_US: "Optional JSON array or comma-separated list. Affects EVERY app using workspace ASR."
+        ja_JP: "任意のJSON配列またはカンマ区切り。ASRを使う全アプリに適用。"
+    - variable: asr_temperature
+      label:
+        en_US: "ASR temperature default — WORKSPACE-WIDE"
+        ja_JP: "ASR temperatureデフォルト — ワークスペース全体"
+      type: text-input
+      required: false
+      placeholder:
+        en_US: "Optional number; blank uses the Shisa API default (0.0)."
+        ja_JP: "任意の数値。空欄ではShisa APIデフォルト（0.0）を使用。"
+    - variable: asr_top_p
+      label:
+        en_US: "ASR top_p default — WORKSPACE-WIDE"
+        ja_JP: "ASR top_pデフォルト — ワークスペース全体"
+      type: text-input
+      required: false
+      placeholder:
+        en_US: "Optional number; blank uses the Shisa API default (0.85)."
+        ja_JP: "任意の数値。空欄ではShisa APIデフォルト（0.85）を使用。"
+    - variable: asr_frequency_penalty
+      label:
+        en_US: "ASR frequency penalty — WORKSPACE-WIDE"
+        ja_JP: "ASR frequency penalty — ワークスペース全体"
+      type: text-input
+      required: false
+      placeholder:
+        en_US: "Optional number; blank uses the Shisa API default (0.5)."
+        ja_JP: "任意の数値。空欄ではShisa APIデフォルト（0.5）を使用。"
+    - variable: asr_repetition_penalty
+      label:
+        en_US: "ASR repetition penalty — WORKSPACE-WIDE"
+        ja_JP: "ASR repetition penalty — ワークスペース全体"
+      type: text-input
+      required: false
+      placeholder:
+        en_US: "Optional number; blank uses the Shisa API default (1.05)."
+        ja_JP: "任意の数値。空欄ではShisa APIデフォルト（1.05）を使用。"
+    - variable: asr_vad
+      label:
+        en_US: "ASR VAD default — WORKSPACE-WIDE"
+        ja_JP: "ASR VADデフォルト — ワークスペース全体"
+      type: text-input
+      required: false
+      placeholder:
+        en_US: "Optional integer; blank uses the Shisa API default (1)."
+        ja_JP: "任意の整数。空欄ではShisa APIデフォルト（1）を使用。"
 models:
   llm:
     predefined:

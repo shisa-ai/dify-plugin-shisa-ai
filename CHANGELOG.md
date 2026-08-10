@@ -2,6 +2,17 @@
 
 All notable user-visible changes are documented here.
 
+## [1.0.2] - 2026-08-10
+
+### Added
+
+- Add optional Shisa ASR language, hotwords, temperature, `top_p`, frequency penalty, repetition penalty, and VAD defaults to provider configuration.
+
+### Changed
+
+- Label every ASR default prominently as workspace-wide because it affects all applications using the workspace Shisa ASR provider.
+- Omit blank ASR settings so the documented Shisa API defaults remain authoritative.
+
 ## [1.0.1] - 2026-08-05
 
 ### Changed
