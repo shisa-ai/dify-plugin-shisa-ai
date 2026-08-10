@@ -1,0 +1,125 @@
+name: Dify E2E
+
+# Runs the Model Provider Dify E2E (LLM / TTS / ASR + workspace-wide ASR
+# defaults) against a real Dify instance started and destroyed inside this
+# runner. Also runs as the gating job in release.yml; this standalone copy
+# allows manual or main-branch validation before tagging a release.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+concurrency:
+  group: dify-e2e-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  DIFY_VERSION: "1.16.1"
+  FIXTURES_REPO: "shisa-ai/shisa-dify-workflows"
+  UV_EXCLUDE_NEWER: "2026-07-29T00:00:00Z"
+  DIFY_ADMIN_EMAIL: "admin@shisa.ai"
+  DIFY_ADMIN_PASSWORD: "shisa-e2e-local"
+
+jobs:
+  dify-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: "Guard: only admins may dispatch manually"
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          perms="$(gh api "repos/${GITHUB_REPOSITORY}/collaborators/${GITHUB_ACTOR}/permission" --jq .permission 2>/dev/null)" || {
+            echo "::error::could not verify dispatcher permission"
+            exit 1
+          }
+          echo "actor=${GITHUB_ACTOR} permission=${perms}"
+          if [ "${perms}" != "admin" ]; then
+            echo "::error::only repository admins may trigger this workflow"
+            exit 1
+          fi
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.8.22"
+          enable-cache: false
+      - name: Install frozen environment
+        run: uv sync --frozen --no-install-project
+      - name: Build plugin package
+        shell: bash
+        run: |
+          mkdir -p dist
+          VERSION="$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')"
+          curl --fail --silent --show-error --location \
+            "https://github.com/langgenius/dify-plugin-daemon/releases/download/0.6.6/dify-plugin-linux-amd64" \
+            --output /tmp/dify-plugin
+          echo "1193fff00a1453b7b3b92ae76ff727760bd1aea9e28834e7a43bac602a0ff011  /tmp/dify-plugin" | sha256sum --check --strict
+          chmod 0755 /tmp/dify-plugin
+          /tmp/dify-plugin plugin package . --output_path "dist/shisa-ai-${VERSION}.difypkg"
+          echo "MODEL_PKG_PATH=dist/shisa-ai-${VERSION}.difypkg" >> "${GITHUB_ENV}"
+      - name: Fetch verified fixtures
+        run: |
+          git clone --depth 1 "https://github.com/${FIXTURES_REPO}.git" /tmp/fixtures
+      - name: Start Dify
+        shell: bash
+        run: |
+          git clone --depth 1 --branch "${DIFY_VERSION}" \
+            https://github.com/langgenius/dify.git /tmp/dify-src
+          cd /tmp/dify-src/docker
+          python - <<'PY'
+          import pathlib
+          import secrets
+
+          lines = pathlib.Path(".env.example").read_text(encoding="utf-8").splitlines()
+          out = []
+          for line in lines:
+              if line.startswith("SECRET_KEY="):
+                  out.append("SECRET_KEY=" + secrets.token_hex(16))
+              elif line.startswith("INIT_PASSWORD="):
+                  out.append("INIT_PASSWORD=${DIFY_ADMIN_PASSWORD}")
+              elif line.startswith("FORCE_VERIFYING_SIGNATURE="):
+                  out.append("FORCE_VERIFYING_SIGNATURE=false")
+              else:
+                  out.append(line)
+          out.append("INIT_EMAIL=${DIFY_ADMIN_EMAIL}")
+          out.append("INIT_USERNAME=admin")
+          out.append("FILES_URL=http://nginx")
+          pathlib.Path(".env").write_text("\n".join(out) + "\n", encoding="utf-8")
+          PY
+          docker compose -f docker-compose.yaml up -d
+      - name: Wait for Dify API
+        shell: bash
+        run: |
+          for i in $(seq 1 120); do
+            if curl --silent --fail "http://localhost/console/api/setup" >/dev/null; then
+              echo "Dify is ready"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Dify did not become ready" >&2
+          docker compose -f /tmp/dify-src/docker/docker-compose.yaml logs --tail 200 >&2 || true
+          exit 1
+      - name: Run Dify E2E harness
+        env:
+          DIFY_BASE_URL: "http://localhost"
+          SHISA_API_KEY: "${{ secrets.SHISA_API_KEY }}"
+          MODEL_DSL_PATH: "/tmp/fixtures/fixtures/shisa-model-provider-e2e.yml"
+          AUDIO_PATH: "/tmp/fixtures/fixtures/test-audio.wav"
+        shell: bash
+        run: uv run --frozen python scripts/model_provider_e2e.py
+      - name: Teardown Dify
+        if: always()
+        shell: bash
+        run: docker compose -f /tmp/dify-src/docker/docker-compose.yaml down -v
