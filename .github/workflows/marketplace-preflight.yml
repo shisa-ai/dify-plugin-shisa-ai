@@ -79,9 +79,24 @@ jobs:
 
       - name: Debug scan target
         run: |
-          echo "pwd=$(pwd)"
-          echo "PLUGIN_PATH=${PLUGIN_PATH}"
-          ls -la "${PLUGIN_PATH}" | head -5
+          python - <<'PY'
+import os, sys
+from pathlib import Path
+sys.path.insert(0, str(Path(".scripts").resolve()))
+from toolkit.checks import secrets
+orig = os.walk
+def logged(top, *a, **kw):
+    for entry in orig(top, *a, **kw):
+        print("WALK>", entry[0])
+        yield entry
+os.walk = logged
+target = Path(os.environ["PLUGIN_PATH"])
+print("TARGET>", target, "is_dir:", target.is_dir())
+errors, warnings = secrets.scan_package(target)
+print("ERRORS>", len(errors))
+for e in errors[:6]:
+    print("E>", e)
+PY
 
       - name: Run official marketplace checks
         run: |
