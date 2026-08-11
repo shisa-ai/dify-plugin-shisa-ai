@@ -199,7 +199,6 @@ jobs:
           PACKAGE="$(find dist -name '*.difypkg' | head -1)"
           gh release create "${GITHUB_REF_NAME}" \
             "${PACKAGE}" \
-            SBOM.cdx.json \
             --verify-tag \
             --title "Shisa AI Model Provider ${GITHUB_REF_NAME}" \
             --generate-notes
